@@ -1,4 +1,4 @@
-FROM linuxserver/plex:latest AS base
+FROM ubuntu:20.04 AS base
 #
 RUN DEBIAN_FRONTEND="noninteractive" TZ="America/Los_Angeles" apt update && apt -y install tzdata
 
@@ -11,7 +11,7 @@ RUN cd /beignet/build && cmake -DLLVM_INSTALL_DIR=/usr/lib/llvm-7/bin .. && make
 FROM linuxserver/plex:latest AS img
 
 RUN apt update && apt -y install clinfo
-COPY --from=0 /usr/local/include/CL /usr/local/include/CL
-COPY --from=0 /usr/local/lib/beignet /usr/local/lib/beignet
-COPY --from=0 /usr/local/lib/beignet /usr/lib/x86_64-linux-gnu/beignet
-COPY --from=0 /usr/local/share/metainfo/com.intel.beignet.metainfo.xml /usr/share/metainfo/
+COPY --from=base /usr/local/include/CL /usr/local/include/CL
+COPY --from=base /usr/local/lib/beignet /usr/local/lib/beignet
+COPY --from=base /usr/local/lib/beignet /usr/lib/x86_64-linux-gnu/beignet
+COPY --from=base /usr/local/share/metainfo/com.intel.beignet.metainfo.xml /usr/share/metainfo/
